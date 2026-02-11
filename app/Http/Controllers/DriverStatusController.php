@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DriverLocationLog;
 use App\Models\DriverStatusLog;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
@@ -88,6 +89,13 @@ class DriverStatusController extends Controller
             'last_longitude' => $validated['longitude'],
             'last_location_at' => now(),
         ])->save();
+
+        DriverLocationLog::create([
+            'user_id' => $user->id,
+            'latitude' => $validated['latitude'],
+            'longitude' => $validated['longitude'],
+            'created_at' => now(),
+        ]);
 
         return response()->json([
             'data' => [

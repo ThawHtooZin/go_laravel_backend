@@ -63,6 +63,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
         // Driver status logs
         Route::get('/driver-status-logs', [UserController::class, 'driverStatusLogs']);
+        Route::get('/driver-location-logs', [UserController::class, 'driverLocationLogs']);
 
         // God's Eye: online drivers with coordinates
         Route::get('/drivers/locations', [UserController::class, 'driverLocations']);

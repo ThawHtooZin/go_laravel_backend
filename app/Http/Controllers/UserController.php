@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\DriverStatusLog;
+use App\Models\DriverLocationLog;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
@@ -238,6 +239,26 @@ class UserController extends Controller
         }
 
         $logs = $query->paginate(100);
+
+        return response()->json([
+            'data' => $logs,
+        ]);
+    }
+
+    /**
+     * Driver location send logs (one row per /driver/location call).
+     */
+    public function driverLocationLogs(Request $request)
+    {
+        $query = DriverLocationLog::with(['user' => function ($q) {
+            $q->select('id', 'display_name', 'phone');
+        }])->orderByDesc('id');
+
+        if ($driverId = $request->query('driver_id')) {
+            $query->where('user_id', $driverId);
+        }
+
+        $logs = $query->paginate(200);
 
         return response()->json([
             'data' => $logs,
